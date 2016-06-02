@@ -1,0 +1,15 @@
+MYSQL COMMANDS :
+
+STATUS : service mysql status
+VERSION : mysqladmin -p -u root version
+CONN : mysql -u root -p (dbname)
+       mysql -u admin -plovebirds lovebirds
+CREATE USER : CREATE USER 'admin'@'localhost' identified by 'lovebirds';
+CREATE DB : CREATE DATABASE lovebirds;
+GRANT : GRANT ALL PRIVILEGES ON lovebirds.* TO admin;
+
+DROP : drop database lovebirds;
+       drop user 'admin'@'localhost'
+
+
+CREATE TABLES : 
