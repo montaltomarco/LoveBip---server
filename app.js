@@ -3,18 +3,28 @@ var apn = require('apn');
 var http = require('http').Server(app);
 var bodyParser = require('body-parser');
 
-var marcoToken = "fe36f3fbb4130c9609c9abf2f78ac67057461f5fba7efb67fffedacf2bfe66e9"
-var liudaToken = "16b2553799fff76a8c288d2f90851021bb921d32d85851fbef94b29622d9f81d"
+var model = require('./lib/models');
+let db = require('./lib/conn/db.js');
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+var options = { cert : 'APNS/cert_dev.pem', key: 'APNS/key_dev.pem'};
 
-var options = { cert : 'ios/cert_dev.pem', key: 'ios/key_dev.pem'};
-
-
-http.listen(80, function(){
-  console.log('-----Listening on : 80');
+model.User.sync({force: false}).then(function() {
+  model.Security.sync({force: false}).then(function() {
+    db.db_inst.sync({force: true}).then(function() {
+      console.log("finished");
+      http.listen(80, function(){
+        console.log('-----Listening on : 80');
+      });
+    });
+  });
 });
+
+var marcoToken = "fe36f3fbb4130c9609c9abf2f78ac67057461f5fba7efb67fffedacf2bfe66e9"
+var liudaToken = "16b2553799fff76a8c288d2f90851021bb921d32d85851fbef94b29622d9f81d"
+
 
 app.get('/', function(req, res){
   res.send('<h1>Hello world</h1>');
