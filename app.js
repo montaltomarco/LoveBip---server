@@ -14,8 +14,8 @@ var options = { cert : 'APNS/cert_dev.pem', key: 'APNS/key_dev.pem'};
 model.User.sync({force: false}).then(function() {
   model.Security.sync({force: false}).then(function() {
     db.db_inst.sync({force: true}).then(function() {
-      console.log("finished");
-      http.listen(80, function(){
+      console.log("\n\n -----------------Database is created \n\n");
+      http.listen(3000, function(){
         console.log('-----Listening on : 3000');
       });
     });
@@ -116,6 +116,19 @@ apnConnection.on('transmissionError', function(errorCode, notification, device) 
 app.post('/v1.0/login/loginWithFacebook', function(req, res) {
     console.log(req.body);
     res.send('Login With Facebook OK');
+    model.User.findOrCreate({where:
+      {email: req.body.email},
+      defaults: {
+        fbUserID: req.body.FBId,
+        first_name: req.body.first_name,
+        last_name: req.body.last_name,
+        pic_url: req.body.pic_url
+      }}).spread(function(user, created) {
+        console.log(user.get({
+          plain: true
+        }))
+        console.log(created);
+      });
 });
 
 app.post('/v1.0/notifications/registerAPNS', function(req, res) {
