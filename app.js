@@ -133,5 +133,10 @@ app.post('/v1.0/login/loginWithFacebook', function(req, res) {
 
 app.post('/v1.0/notifications/registerAPNS', function(req, res) {
     console.log(req.body);
-    res.send('Register for push notifications OK');
+    model.User.findOne({where:
+      {email: req.header('email')}
+    }).then(function(user) {
+      user.device_token = req.body.device_token
+    })
+    res.json({"message": "Registration is OK"});
 });
