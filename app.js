@@ -112,3 +112,13 @@ apnConnection.on('transmissionError', function(errorCode, notification, device) 
     console.log("-------TRANSMISSION ERROR. Could not transmit notification : " + notification + " on device " + device + ". ERROR : " + errorCode);
     return;
 });
+
+app.post('/v1.0/login/loginWithFacebook', function(req, res) {
+    console.log(req.body);
+    res.send('Login With Facebook OK');
+});
+
+app.post('/v1.0/notifications/registerAPNS', function(req, res) {
+    console.log(req.body);
+    res.send('Register for push notifications OK');
+});
