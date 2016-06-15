@@ -115,7 +115,6 @@ apnConnection.on('transmissionError', function(errorCode, notification, device) 
 
 app.post('/v1.0/login/loginWithFacebook', function(req, res) {
     console.log(req.body);
-    res.send('Login With Facebook OK');
     model.User.findOrCreate({where:
       {email: req.body.email},
       defaults: {
@@ -129,6 +128,7 @@ app.post('/v1.0/login/loginWithFacebook', function(req, res) {
         }))
         console.log(created);
       });
+      res.json({"message": "Login With Facebook OK"});
 });
 
 app.post('/v1.0/notifications/registerAPNS', function(req, res) {
