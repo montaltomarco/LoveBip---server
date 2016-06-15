@@ -15,7 +15,7 @@ model.User.sync({force: false}).then(function() {
   model.Security.sync({force: false}).then(function() {
     db.db_inst.sync({force: true}).then(function() {
       console.log("finished");
-      http.listen(3000, function(){
+      http.listen(80, function(){
         console.log('-----Listening on : 3000');
       });
     });
