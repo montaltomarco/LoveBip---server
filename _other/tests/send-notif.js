@@ -1,8 +1,8 @@
 var apn = require('apn');
 
-var options = { cert : 'ios/cert_dev.pem', key: 'ios/key_dev.pem' };
+var options = { cert : '../lovebip_certs/cert_dev.pem', key: '../lovebip_certs/key_dev.pem' };
 var apnConnection = new apn.Connection(options);
-var marcoDevice = new apn.Device("16b2553799fff76a8c288d2f90851021bb921d32d85851fbef94b29622d9f81d");//fe36f3fbb4130c9609c9abf2f78ac67057461f5fba7efb67fffedacf2bfe66e9");
+var marcoDevice = new apn.Device("1ef73701615e2fdc36260eb4bf99054813e1a8f377e6368a7f23666f868b5188");//fe36f3fbb4130c9609c9abf2f78ac67057461f5fba7efb67fffedacf2bfe66e9");
 
 var noteforMarco = new apn.Notification();
 

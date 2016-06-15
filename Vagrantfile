@@ -17,7 +17,9 @@ Vagrant.configure(2) do |config|
 
   config.vm.provision "shell", inline: <<-SHELL
     sudo apt-get update -y
-    sudo apt-get install -y postgresql-9.3-postgis-2.1
+    sudo apt-get install -y postgresql-9.3-postgis-2.1 nodejs-legacy
+    curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash - 
+    apt-get -y install nodejs
     psql -U postgres
     sudo sed -i -- 's/peer/trust/g' /etc/postgresql/9.3/main/pg_hba.conf
     sudo sed -i -- 's/md5/trust/g' /etc/postgresql/9.3/main/pg_hba.conf
