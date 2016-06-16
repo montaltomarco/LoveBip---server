@@ -134,7 +134,9 @@ app.post('/v1.0/login/loginWithFacebook', function(req, res) {
 app.post('/v1.0/notifications/registerAPNS', function(req, res) {
     console.log(req.body);
     model.User.update(
-      {device_token: req.body.device_token},
+      {
+        device_token: req.body.iosDeviceId
+      },
       {where: {email: req.header('email')} }
     ).then(
       console.log("UPDATED")
