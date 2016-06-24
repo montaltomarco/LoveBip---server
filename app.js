@@ -9,7 +9,7 @@ let db = require('./lib/conn/db.js');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-var options = { cert : 'APNS/cert_dev.pem', key: 'APNS/key_dev.pem'};
+var options = { cert : 'APNS/cert_dev_bip.pem', key: 'APNS/key_dev_bip.pem'};
 
 model.User.sync({force: false}).then(function() {
   model.Security.sync({force: false}).then(function() {
@@ -24,7 +24,6 @@ model.User.sync({force: false}).then(function() {
 
 var marcoToken = "fe36f3fbb4130c9609c9abf2f78ac67057461f5fba7efb67fffedacf2bfe66e9"
 var liudaToken = "16b2553799fff76a8c288d2f90851021bb921d32d85851fbef94b29622d9f81d"
-
 
 app.get('/', function(req, res){
   res.send('<h1>Hello world</h1>');
@@ -151,18 +150,20 @@ app.post('/v1.0/pair/registerPair', function(req, res) {
         { where: {email: req.header('email')} }
     ).then(function(user) {
         uid1 = user.id;
+        console.log("ID 1 is : %s", uid1)
     });
     model.User.findOne(
         { where: {email: req.body.emailPair} }
     ).then(function(user) {
         uid2 = user.id;
+        console.log("ID 2 is : %s", uid2)
     });
-    
+
     if (uid1!==null && uid2!==null) {
         model.Pair.findOrCreate({where:
       {user_id1: uid1},
       defaults: {
-        user_id1: uid1, 
+        user_id1: uid1,
         user_id2: uid2
       }}).spread(function(pair, created) {
         console.log(pair.get({
@@ -175,5 +176,5 @@ app.post('/v1.0/pair/registerPair', function(req, res) {
     else{
       res.json({"message": "Paired: KO"});
     }
-    
+
 });
