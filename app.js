@@ -150,14 +150,14 @@ app.post('/v1.0/pair/registerPair', function(req, res) {
       {email: req.header('email')} }
       ).then(function(user) {
         uid1 = user.id;
-        console.log("ID 1 is : %s", uid1)
         if(uid1) {
+          console.log("ID 1 is : %s", uid1)
           model.User.findOne({where:
             {email: req.body.emailPair} }
             ).then(function(user) {
                 uid2 = user.id;
-                console.log("ID 2 is : %s", uid2)
                 if(uid2) {
+                  console.log("ID 2 is : %s", uid2)
                   model.Pair.findOrCreate({where:
                     {user_id1: uid1},
                     defaults: {
