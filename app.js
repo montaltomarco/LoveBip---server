@@ -142,3 +142,38 @@ app.post('/v1.0/notifications/registerAPNS', function(req, res) {
       console.log("UPDATED")
     )
 });
+
+app.post('/v1.0/pair/registerAPNSpair', function(req, res) {
+    console.log(req.body);
+    var uid1;
+    var uid2;
+    model.User.findOne(
+        { where: {email: req.header('email')} }
+    ).then(function(user) {
+        uid1 = user.id;
+    });
+    model.User.findOne(
+        { where: {email: req.body.emailPair} }
+    ).then(function(user) {
+        uid2 = user.id;
+    });
+
+    if (uid1!==null && uid2!==null) {
+        model.Pair.findOrCreate({where:
+      {user_id1: uid1},
+      defaults: {
+        user_id1: uid1,
+        user_id2: uid2
+      }}).spread(function(pair, created) {
+        console.log(pair.get({
+          plain: true
+        }))
+        console.log(created);
+      });
+      res.json({"message": "Paired: OK"});
+    }
+    else{
+      res.json({"message": "Paired: KO"});
+    }
+
+});
