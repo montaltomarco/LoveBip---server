@@ -146,35 +146,47 @@ app.post('/v1.0/pair/registerPair', function(req, res) {
     console.log(req.body);
     var uid1;
     var uid2;
-    model.User.findOne(
-        { where: {email: req.header('email')} }
-    ).then(function(user) {
+    model.User.findOne({where:
+      {email: req.header('email')} }
+      ).then(function(user) {
         uid1 = user.id;
         console.log("ID 1 is : %s", uid1)
-    });
-    model.User.findOne(
-        { where: {email: req.body.emailPair} }
-    ).then(function(user) {
-        uid2 = user.id;
-        console.log("ID 2 is : %s", uid2)
-    });
-
-    if (uid1 && uid2) {
-        model.Pair.findOrCreate({where:
-      {user_id1: uid1},
-      defaults: {
-        user_id1: uid1,
-        user_id2: uid2
-      }}).spread(function(pair, created) {
-        console.log(pair.get({
-          plain: true
-        }))
-        console.log(created);
-      });
-      res.json({"message": "Paired: OK"});
-    }
-    else{
-      res.json({"message": "Paired: KO"});
-    }
+    }).then(
+      if(uid1) {
+        model.User.findOne({where:
+          {email: req.body.emailPair} }
+          ).then(function(user) {
+              uid2 = user.id;
+              console.log("ID 2 is : %s", uid2)
+        }).then(
+          if(uid2) {
+            model.Pair.findOrCreate({where:
+              {user_id1: uid1},
+              defaults: {
+                user_id1: uid1,
+                user_id2: uid2
+              }}).spread(function(pair, created) {
+                console.log(pair.get({
+                  plain: true
+                }))
+                console.log(created);
+                if(created) {
+                  res.json({"message": "Paired: OK"});
+                  return;
+                } else {
+                  res.json({"message": "No need to pair"});
+                  return;
+                }
+              });
+            } else {
+              res.json({"message": "Paired: KO"});
+              return;
+            }
+        );
+      } else {
+        res.json({"message": "Paired: KO"});
+        return;
+      }
+    );
 
 });
