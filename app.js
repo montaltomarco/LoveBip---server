@@ -13,7 +13,7 @@ var options = { cert : 'APNS/cert_dev_bip.pem', key: 'APNS/key_dev_bip.pem'};
 
 model.User.sync({force: false}).then(function() {
   model.Security.sync({force: false}).then(function() {
-    db.db_inst.sync({force: true}).then(function() {
+    db.db_inst.sync({force: false}).then(function() {
       console.log("\n\n -----------------Database is created \n\n");
       http.listen(3000, function(){
         console.log('-----Listening on : 3000');
@@ -159,7 +159,7 @@ app.post('/v1.0/pair/registerAPNSpair', function(req, res) {
         console.log("ID 2 is : %s", uid2)
     });
 
-    if (uid1!==null && uid2!==null) {
+    if (uid1!=null && uid2!=null) {
         model.Pair.findOrCreate({where:
       {user_id1: uid1},
       defaults: {
