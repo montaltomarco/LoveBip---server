@@ -149,14 +149,14 @@ app.post('/v1.0/pair/registerPair', function(req, res) {
     model.User.findOne({where:
       {email: req.header('email')} }
       ).then(function(user) {
-        uid1 = user.id;
-        if(uid1) {
+        if(user) {
+          uid1 = user.id;
           console.log("ID 1 is : %s", uid1)
           model.User.findOne({where:
             {email: req.body.emailPair} }
             ).then(function(user) {
-                uid2 = user.id;
-                if(uid2) {
+                if(user) {
+                  uid2 = user.id;
                   console.log("ID 2 is : %s", uid2)
                   model.Pair.findOrCreate({where:
                     {user_id1: uid1},
@@ -168,19 +168,25 @@ app.post('/v1.0/pair/registerPair', function(req, res) {
                         plain: true
                       }))
                       console.log(created);
-                      if(created) {
-                        res.json({"message": "Paired: OK"});
-                        return;
-                      } else {
-                        res.json({"message": "No need to pair"});
-                        return;
-                      }
                     });
+                    model.Pair.findOrCreate({where:
+                      {user_id1: uid1},
+                      defaults: {
+                        user_id1: uid2,
+                        user_id2: uid1
+                      }}).spread(function(pair, created) {
+                        console.log(pair.get({
+                          plain: true
+                        }))
+                        console.log(created);
+                      });
+                      res.json({"message": "Paired: OK"});
+                      return;
                   } else {
                     res.json({"message": "Paired: KO"});
                     return;
                   }
-          });
+              });
         } else {
           res.json({"message": "Paired: KO"});
           return;
