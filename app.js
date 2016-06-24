@@ -56,15 +56,53 @@ noteforMarco.contentAvailable = 1
 noteforLudmila.alert = "Hello Ludmila ! Marco thinks about you!";
 noteforLudmila.contentAvailable = 1
 
-app.post('/api/sendemotion', function(req, res) {
-    console.log(req.body);
+
+var device;
+var note;
+
+app.post('/v1.0/api/sendemotion', function(req, res) {
+    /*console.log(req.body);
     if (req.body.iosdeviceid == marcoToken) {
         apnConnection.pushNotification(noteforLudmila, liudaDevice);
         res.send('Success');
     } else{
         apnConnection.pushNotification(noteforMarco, marcoDevice);
         res.send('Success');
-    }
+    }*/
+
+    var tokenToSend;
+
+    model.User.findOne({where:
+      {email: req.header('email')} }
+      ).then(function(user) {
+        if(user) {
+          model.Pair.findOne({where:
+            {user_id1: user.id} }
+          ).then(function(pair) {
+            if(pair) {
+              model.User.findOne({where:
+                {id: pair.user_id2} }
+              ).then(function(user_pair) {
+                tokenToSend = user_pair.device_token
+                device = new apn.Device(tokenToSend);
+                note = new apn.Notification();
+                note.alert = "Hello" + user_pair.first_name + " ! " + user.first_name + " thinks about you!";
+                note.contentAvailable = 1
+                apnConnection.pushNotification(note, device);
+                res.json({"Message": "Success"});
+                return;
+              });
+
+            } else {
+              res.json({"Message": "No second user"});
+              return;
+            }
+        });
+      } else {
+        res.json({"Message": "User not found"})
+        return;
+      }
+    });
 });
 
 apnConnection.on('socketError', function (error) {
