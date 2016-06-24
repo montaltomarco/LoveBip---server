@@ -170,7 +170,7 @@ app.post('/v1.0/pair/registerPair', function(req, res) {
                       console.log(created);
                     });
                     model.Pair.findOrCreate({where:
-                      {user_id1: uid1},
+                      {user_id1: uid2},
                       defaults: {
                         user_id1: uid2,
                         user_id2: uid1
