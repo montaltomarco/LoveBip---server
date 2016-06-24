@@ -9,7 +9,7 @@ let db = require('./lib/conn/db.js');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-var options = { cert : 'APNS/cert_dev.pem', key: 'APNS/key_dev.pem'};
+var options = { cert : 'APNS/cert_dev_bip.pem', key: 'APNS/key_dev_bip.pem'};
 
 model.User.sync({force: false}).then(function() {
   model.Security.sync({force: false}).then(function() {
