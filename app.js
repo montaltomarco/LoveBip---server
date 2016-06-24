@@ -13,7 +13,7 @@ var options = { cert : 'APNS/cert_dev_bip.pem', key: 'APNS/key_dev_bip.pem'};
 
 model.User.sync({force: false}).then(function() {
   model.Security.sync({force: false}).then(function() {
-    db.db_inst.sync({force: true}).then(function() {
+    db.db_inst.sync({force: false}).then(function() {
       console.log("\n\n -----------------Database is created \n\n");
       http.listen(80, function(){
         console.log('-----Listening on : 3000');
