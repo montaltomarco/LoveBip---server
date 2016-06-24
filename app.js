@@ -159,7 +159,7 @@ app.post('/v1.0/pair/registerPair', function(req, res) {
         console.log("ID 2 is : %s", uid2)
     });
 
-    if (uid1!==null && uid2!==null) {
+    if (uid1!=null && uid2!=null) {
         model.Pair.findOrCreate({where:
       {user_id1: uid1},
       defaults: {
