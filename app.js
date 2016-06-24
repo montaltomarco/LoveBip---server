@@ -15,7 +15,7 @@ model.User.sync({force: false}).then(function() {
   model.Security.sync({force: false}).then(function() {
     db.db_inst.sync({force: true}).then(function() {
       console.log("\n\n -----------------Database is created \n\n");
-      http.listen(3000, function(){
+      http.listen(80, function(){
         console.log('-----Listening on : 3000');
       });
     });
@@ -143,7 +143,7 @@ app.post('/v1.0/notifications/registerAPNS', function(req, res) {
     )
 });
 
-app.post('/v1.0/pair/registerAPNSpair', function(req, res) {
+app.post('/v1.0/pair/registerPair', function(req, res) {
     console.log(req.body);
     var uid1;
     var uid2;
