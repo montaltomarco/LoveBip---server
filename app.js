@@ -4,7 +4,7 @@ var http = require('http').Server(app);
 var bodyParser = require('body-parser');
 
 var model = require('./lib/models');
-let db = require('./lib/conn/db.js');
+var db = require('./lib/conn/db.js');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -86,7 +86,7 @@ app.post('/v1.0/api/sendemotion', function(req, res) {
                 tokenToSend = user_pair.device_token
                 device = new apn.Device(tokenToSend);
                 note = new apn.Notification();
-                note.alert = "Hello" + user_pair.first_name + " ! " + user.first_name + " thinks about you!";
+                note.alert = "Hello " + user_pair.first_name + " ! " + user.first_name + " thinks about you!";
                 note.contentAvailable = 1
                 apnConnection.pushNotification(note, device);
                 res.json({"Message": "Success"});
@@ -189,13 +189,13 @@ app.post('/v1.0/pair/registerPair', function(req, res) {
       ).then(function(user) {
         if(user) {
           uid1 = user.id;
-          console.log("ID 1 is : %s", uid1)
+          console.log("ID 1 is : %s", uid1);
           model.User.findOne({where:
             {email: req.body.emailPair} }
-            ).then(function(user) {
-                if(user) {
-                  uid2 = user.id;
-                  console.log("ID 2 is : %s", uid2)
+            ).then(function(userPair) {
+                if(userPair) {
+                  uid2 = userPair.id;
+                  console.log("ID 2 is : %s", uid2);
                   model.Pair.findOrCreate({where:
                     {user_id1: uid1},
                     defaults: {
@@ -204,7 +204,7 @@ app.post('/v1.0/pair/registerPair', function(req, res) {
                     }}).spread(function(pair, created) {
                       console.log(pair.get({
                         plain: true
-                      }))
+                      }));
                       console.log(created);
                     });
                     model.Pair.findOrCreate({where:
@@ -215,19 +215,19 @@ app.post('/v1.0/pair/registerPair', function(req, res) {
                       }}).spread(function(pair, created) {
                         console.log(pair.get({
                           plain: true
-                        }))
+                        }));
                         console.log(created);
                       });
-                      res.json({"message": "Paired: OK"});
-                      return;
+                      res.json({"message": "Paired: OK", "userPairName": userPair.first_name});
+                      return res;
                   } else {
                     res.json({"message": "Paired: KO"});
-                    return;
+                    return res;
                   }
               });
         } else {
           res.json({"message": "Paired: KO"});
-          return;
+          return res;
         }
       });
 });
