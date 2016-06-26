@@ -166,6 +166,7 @@ app.post('/v1.0/login/loginWithFacebook', function(req, res) {
         console.log(created);
       });
       res.json({"message": "Login With Facebook OK"});
+    return res;
 });
 
 app.post('/v1.0/notifications/registerAPNS', function(req, res) {
@@ -176,7 +177,9 @@ app.post('/v1.0/notifications/registerAPNS', function(req, res) {
       },
       {where: {email: req.header('email')} }
     ).then(
-      console.log("UPDATED")
+        console.log("UPDATED");
+        res.json({"message": "Registered for APNS"});
+        return res;
     )
 });
 
