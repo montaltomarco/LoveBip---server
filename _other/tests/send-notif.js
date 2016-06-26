@@ -1,6 +1,6 @@
 var apn = require('apn');
 
-var options = { cert : '../lovebip_certs/cert_dev.pem', key: '../lovebip_certs/key_dev.pem' };
+var options = { cert : '../../APNS/cert_dev_bip.pem', key: '../../APNS/key_dev_bip.pem' };
 var apnConnection = new apn.Connection(options);
 var marcoDevice = new apn.Device("b50e7f19d07999b18e75e94bf270eb241c9e1e663bf07ec4fe4964f23ca9fd56");//fe36f3fbb4130c9609c9abf2f78ac67057461f5fba7efb67fffedacf2bfe66e9");
 
