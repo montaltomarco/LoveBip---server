@@ -176,11 +176,11 @@ app.post('/v1.0/notifications/registerAPNS', function(req, res) {
         device_token: req.body.iosDeviceId
       },
       {where: {email: req.header('email')} }
-    ).then(
+    ).then(function() {
         console.log("UPDATED");
         res.json({"message": "Registered for APNS"});
         return res;
-    )
+    });
 });
 
 app.post('/v1.0/pair/registerPair', function(req, res) {
